@@ -30,7 +30,7 @@ public class EvaluatorDriver {
      */
     static {
         EvaluatorDriver.testExpressions = new HashMap<>();
-        EvaluatorDriver.testExpressions.put("1+2", "2");
+        EvaluatorDriver.testExpressions.put("1+2", "3");
         EvaluatorDriver.testExpressions.put("1/2", "0");
         EvaluatorDriver.testExpressions.put("1+2*3", "7");
         EvaluatorDriver.testExpressions.put("(1+2)*3", "9");
@@ -65,9 +65,11 @@ public class EvaluatorDriver {
                     System.out.printf("Expression : %s , Result %6d\n", testExpression, actualResult);
                 }
             } catch (InvalidTokenException ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(ex);
+                ex.printStackTrace();
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+                System.out.println(ex);
+                ex.printStackTrace();
             }
         } else if (args.length == 1 && (args[0]).equalsIgnoreCase("auto")) {
             /*
@@ -103,9 +105,11 @@ public class EvaluatorDriver {
                     actualResult = evaluator.evaluateExpression(testExpression);
                     System.out.printf("Expression : %s , Result: %-6d\n", testExpression, actualResult);
                 } catch (InvalidTokenException ex) {
-                    System.out.println(ex.getMessage());
+                    System.out.println(ex);
+                    ex.printStackTrace();
                 } catch (Exception ex) {
-                    System.out.println(ex.getMessage());
+                    System.out.println(ex);
+                    ex.printStackTrace();
                 }
 
             }

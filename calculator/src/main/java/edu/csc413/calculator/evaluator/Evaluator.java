@@ -10,7 +10,7 @@ public class Evaluator {
   private Stack<Operand> operandStack;
   private Stack<Operator> operatorStack;
   private StringTokenizer expressionTokenizer;
-  private final String delimiters = " +/*-^";
+  private final String delimiters = " ()+/*-^";
 
   public Evaluator() {
     operandStack = new Stack<>();
@@ -33,32 +33,41 @@ public class Evaluator {
 
     while ( this.expressionTokenizer.hasMoreTokens() ) {
       // filter out spaces
-      if ( !( expressionToken = this.expressionTokenizer.nextToken() ).equals( " " )) {
+       expressionToken = this.expressionTokenizer.nextToken();
+      if ( !( expressionToken).equals( " " )) {
         // check if token is an operand
         if ( Operand.check( expressionToken )) {
           operandStack.push( new Operand( expressionToken ));
         } else {
-          if ( ! Operator.check( expressionToken )) {
+          if ( !Operator.check( expressionToken )) {
             throw new InvalidTokenException(expressionToken);
           }
-
+          else if(expressionToken.equals(")")){
+            while(!operatorStack.peek().equals(Operator.getOperator("("))){
+              Operand temporaryStack = operandStack.pop();
+              operandStack.push(operatorStack.pop().execute(operandStack.pop(), temporaryStack));
+            }
+            operatorStack.pop();
+          }
 
           // TODO Operator is abstract - these two lines will need to be fixed:
           // The Operator class should contain an instance of a HashMap,
           // and values will be instances of the Operators.  See Operator class
           // skeleton for an example.
-          Operator newOperator = new Operator();
-        
-          while (operatorStack.peek().priority() >= newOperator.priority() ) {
-            // note that when we eval the expression 1 - 2 we will
-            // push the 1 then the 2 and then do the subtraction operation
-            // This means that the first number to be popped is the
-            // second operand, not the first operand - see the following code
-            Operator operatorFromStack = operatorStack.pop();
-            Operand operandTwo = operandStack.pop();
-            Operand operandOne = operandStack.pop();
-            Operand result = operatorFromStack.execute( operandOne, operandTwo );
-            operandStack.push( result );
+          Operator newOperator = Operator.getOperator(expressionToken);
+
+          if(!expressionToken.equals("(")) {
+            while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
+              // note that when we eval the expression 1 - 2 we will
+              // push the 1 then the 2 and then do the subtraction operation
+              // This means that the first number to be popped is the
+              // second operand, not the first operand - see the following code
+              Operator operatorFromStack = operatorStack.pop();
+              Operand operandTwo = operandStack.pop();
+              Operand operandOne = operandStack.pop();
+              Operand result = operatorFromStack.execute(operandOne, operandTwo);
+              operandStack.push(result);
+            }
           }
 
           operatorStack.push( newOperator );
@@ -76,6 +85,13 @@ public class Evaluator {
     // that is, we should keep evaluating the operator stack until it is empty;
     // Suggestion: create a method that processes the operator stack until empty.
 
-    return 0;
+    Operand temporaryStack;
+
+    while(!operatorStack.isEmpty() && !operandStack.isEmpty()){
+      temporaryStack = operandStack.pop();
+      operandStack.push(operatorStack.pop().execute(operandStack.pop(), temporaryStack));
+    }
+
+    return operandStack.pop().getValue();
   }
 }

@@ -2,6 +2,8 @@ package edu.csc413.calculator.operators;
 
 import edu.csc413.calculator.evaluator.Operand;
 
+import java.util.HashMap;
+
 public abstract class Operator {
     // The Operator class should contain an instance of a HashMap
     // This map will use keys as the tokens we're interested in,
@@ -14,11 +16,24 @@ public abstract class Operator {
     // operators.put( "+", new AdditionOperator() );
     // operators.put( "-", new SubtractionOperator() );
 
+    static HashMap<String, Operator> operators = new HashMap();
+
+    // static initializer
+    static{
+        operators.put( "+", new AddOperator());
+        operators.put( "-", new SubtractOperator());
+        operators.put( "*", new MultiplyOperator());
+        operators.put( "/", new DivideOperator());
+        operators.put( "^", new PowerOperator());
+        operators.put( "(", new LeftParenthesesOperator());
+        operators.put( ")", new RightParenthesesOperator());
+    }
     /**
      * retrieve the priority of an Operator
      * @return priority of an Operator as an int
      */
     public abstract int priority();
+
 
     /**
      * Abstract method to execute an operator given two operands.
@@ -34,10 +49,11 @@ public abstract class Operator {
      * granting access to the Operator HashMap.
      *
      * @param token key of the operator we want to retrieve
-     * @return reference to a Operator instance.
+     * @return reference to an Operator instance.
      */
     public static Operator getOperator(String token) {
-        return null;
+        // returns reference to an Operator instance.
+        return operators.get(token);
     }
 
     
@@ -48,6 +64,10 @@ public abstract class Operator {
      * Think about what happens if we add more operators.
      */
     public static boolean check(String token) {
+        // determines if given token is a valid operator.
+        if(operators.containsKey(token)){
+            return true;
+        }
         return false;
     }
 }

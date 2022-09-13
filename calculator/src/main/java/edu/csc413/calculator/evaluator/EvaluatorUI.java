@@ -74,8 +74,22 @@ public class EvaluatorUI extends JFrame implements ActionListener {
      * @param actionEventObject Event object generated when a
      *                    button is pressed.
      */
+    @Override // implement private methods. methods incomplete
     public void actionPerformed(ActionEvent actionEventObject) {
+        //System.out.println(actionEventObject);
+        if(actionEventObject.getSource() instanceof JButton){
+            String actionCommand = ((JButton) actionEventObject.getSource()).getActionCommand();
 
+        }
+    }
+    private void evaluatesExpression(){
+        // evaluates the expression
+    }
 
+    private void clearCharacter(){
+        String expressionText = expressionTextField.getText();
+        if(!expressionText.isEmpty()){
+           // unfinished
+        }
     }
 }
