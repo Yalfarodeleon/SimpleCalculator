@@ -42,7 +42,6 @@ public abstract class Operator {
      * @return an operand of the result of the operation.
      */
     public abstract Operand execute(Operand operandOne, Operand operandTwo);
-
     /**
      * used to retrieve an operator from our HashMap.
      * This will act as out publicly facing function,
