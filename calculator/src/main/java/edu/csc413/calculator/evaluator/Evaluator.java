@@ -10,7 +10,7 @@ public class Evaluator {
   private Stack<Operand> operandStack;
   private Stack<Operator> operatorStack;
   private StringTokenizer expressionTokenizer;
-  private final String delimiters = " ()+/*-^";
+  private final String delimiters = " +/*-^()";
 
   public Evaluator() {
     operandStack = new Stack<>();
@@ -48,29 +48,30 @@ public class Evaluator {
               operandStack.push(operatorStack.pop().execute(operandStack.pop(), temporaryStack));
             }
             operatorStack.pop();
-          }
+          }else {
 
-          // TODO Operator is abstract - these two lines will need to be fixed:
-          // The Operator class should contain an instance of a HashMap,
-          // and values will be instances of the Operators.  See Operator class
-          // skeleton for an example.
-          Operator newOperator = Operator.getOperator(expressionToken);
+            // TODO Operator is abstract - these two lines will need to be fixed:
+            // The Operator class should contain an instance of a HashMap,
+            // and values will be instances of the Operators.  See Operator class
+            // skeleton for an example.
+            Operator newOperator = Operator.getOperator(expressionToken);
 
-          if(!expressionToken.equals("(")) {
-            while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
-              // note that when we eval the expression 1 - 2 we will
-              // push the 1 then the 2 and then do the subtraction operation
-              // This means that the first number to be popped is the
-              // second operand, not the first operand - see the following code
-              Operator operatorFromStack = operatorStack.pop();
-              Operand operandTwo = operandStack.pop();
-              Operand operandOne = operandStack.pop();
-              Operand result = operatorFromStack.execute(operandOne, operandTwo);
-              operandStack.push(result);
+            if (!expressionToken.equals("(")) {
+              while (!operatorStack.isEmpty() && operatorStack.peek().priority() >= newOperator.priority()) {
+                // note that when we eval the expression 1 - 2 we will
+                // push the 1 then the 2 and then do the subtraction operation
+                // This means that the first number to be popped is the
+                // second operand, not the first operand - see the following code
+                Operator operatorFromStack = operatorStack.pop();
+                Operand operandTwo = operandStack.pop();
+                Operand operandOne = operandStack.pop();
+                Operand result = operatorFromStack.execute(operandOne, operandTwo);
+                operandStack.push(result);
+              }
             }
-          }
 
-          operatorStack.push( newOperator );
+            operatorStack.push(newOperator);
+          }
         }
       }
     }

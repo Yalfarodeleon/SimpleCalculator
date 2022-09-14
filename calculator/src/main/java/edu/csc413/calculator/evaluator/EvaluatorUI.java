@@ -14,11 +14,11 @@ public class EvaluatorUI extends JFrame implements ActionListener {
     // numbered from left to right, top to bottom
     // bText[] array contains the text for corresponding buttons
     private static final String[] buttonText = {
-        "7", "8", "9", "+",
-        "4", "5", "6", "-", 
-        "1", "2", "3", "*", 
-        "(", "0", ")", "/", 
-        "C", "CE", "=", "^"
+            "7", "8", "9", "+",
+            "4", "5", "6", "-",
+            "1", "2", "3", "*",
+            "(", "0", ")", "/",
+            "C", "CE", "=", "^"
     };
 
     /**
@@ -71,25 +71,65 @@ public class EvaluatorUI extends JFrame implements ActionListener {
     /**
      * This function is triggered anytime a button is pressed
      * on our Calculator GUI.
+     *
      * @param actionEventObject Event object generated when a
-     *                    button is pressed.
+     *                          button is pressed.
      */
-    @Override // implement private methods. methods incomplete
+        private Boolean emptyOutput = false;
+
     public void actionPerformed(ActionEvent actionEventObject) {
         //System.out.println(actionEventObject);
-        if(actionEventObject.getSource() instanceof JButton){
-            String actionCommand = ((JButton) actionEventObject.getSource()).getActionCommand();
-
+        String command = actionEventObject.getActionCommand();
+        if(emptyOutput){
+            expressionTextField.setText("");
+            emptyOutput = false;
         }
-    }
-    private void evaluatesExpression(){
-        // evaluates the expression
-    }
 
-    private void clearCharacter(){
-        String expressionText = expressionTextField.getText();
-        if(!expressionText.isEmpty()){
-           // unfinished
+        if("9".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("8".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("7".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("6".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("5".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("4".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("3".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("2".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("1".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+        if("0".equals(actionEventObject.getActionCommand())){
+            this.expressionTextField.setText(this.expressionTextField.getText()+command);
+        }
+
+        if(actionEventObject.getActionCommand() == "C"){
+            expressionTextField.setText("");
+        }
+
+        /*else if(actionEventObject.getActionCommand() == "CE"){
+
+        }*/
+
+        /*else if(actionEventObject.getActionCommand() == "="){
+
+        }*/
+
+        else{
+            expressionTextField.setText(expressionTextField.getText() + actionEventObject.getActionCommand());
         }
     }
 }
